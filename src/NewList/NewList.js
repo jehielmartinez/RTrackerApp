@@ -1,7 +1,12 @@
-import React, { Component } from './node_modules/react';
+import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 
 export default class NewList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
 
   render() {
     return (

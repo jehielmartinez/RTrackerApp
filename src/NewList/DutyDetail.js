@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
-import { Container, Header, Content, Form, Item, Label, Input, Textarea, Picker, DatePicker } from 'native-base';
+import { View } from 'react-native';
+import { Text, Container, Header, Content, Form, Item, Label, Input, Textarea, Picker, DatePicker, Button } from 'native-base';
 
 export default class DutyDetail extends Component {
   
@@ -11,26 +11,33 @@ export default class DutyDetail extends Component {
         <Header/>
         <Content>
             <Form padder>
-                <Item>
-                    <Label>Descripcion</Label>
+                <Item floatingLabel>
+                    <Label>Descripción</Label>
                     <Input/>
                 </Item>
-                <Item picker>
-                    <DatePicker
-                        defaultDate={new Date()}
-                        locale={'es'}
-                        animationType={'fade'}
-                        placeHolderText={'Fecha de Pago'}
-                    />
-                </Item>
-                <Item>
-                    <Label>Fecha de Pago</Label>
+
+                <Item floatingLabel>
+                    <Label>Monto</Label>
                     <Input keyboardType='numeric'/>
                 </Item>
-                <Item>
+               
+                <Item floatingLabel>
                     <Label>Notas</Label>
                     <Textarea rowSpan={5}/>
                 </Item>
+
+                <Item picker>
+                    <Picker
+                        mode='dropdown'
+                        placeholder='Pagar en'
+                    >
+                        <Picker.Item label='Primera Quincena' value='firstQ'/>
+                        <Picker.Item label='Segunda Quincena' value='lastQ'/>
+                    </Picker>
+                </Item>
+                <Button block primary><Text>Almacenar</Text></Button>
+                <Button block danger><Text>Cancelar</Text></Button>
+
             </Form>
         </Content>
       </Container>
