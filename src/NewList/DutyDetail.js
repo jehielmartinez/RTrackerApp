@@ -1,32 +1,28 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
 import { Text, Container, Header, Content, Form, Item, Label, Input, Textarea, Picker, DatePicker, Button } from 'native-base';
+import {StyleSheet} from 'react-native';
 
 export default class DutyDetail extends Component {
   
-
   render() {
     return (
       <Container>
         <Header/>
-        <Content>
-            <Form padder>
-                <Item floatingLabel>
-                    <Label>Descripción</Label>
-                    <Input/>
+        <Content padder>
+            <Form>
+                <Item bordered regular style={styles.inputStyle}> 
+                  <Input placeholder='Descripción'/>
                 </Item>
-
-                <Item floatingLabel>
-                    <Label>Monto</Label>
-                    <Input keyboardType='numeric'/>
+              
+                <Item bordered regular style={styles.inputStyle}>
+                  <Input placeholder='Monto' keyboardType='numeric'/>
                 </Item>
                
-                <Item floatingLabel>
-                    <Label>Notas</Label>
-                    <Textarea rowSpan={5}/>
+                <Item bordered regular style={styles.inputStyle}>
+                    <Textarea placeholder='Notas' rowSpan={5}/>
                 </Item>
 
-                <Item picker>
+                <Item bordered regular picker style={styles.inputStyle}>
                     <Picker
                         mode='dropdown'
                         placeholder='Pagar en'
@@ -35,12 +31,22 @@ export default class DutyDetail extends Component {
                         <Picker.Item label='Segunda Quincena' value='lastQ'/>
                     </Picker>
                 </Item>
-                <Button block primary><Text>Almacenar</Text></Button>
-                <Button block danger><Text>Cancelar</Text></Button>
-
+                <Button style={styles.buttonStyle} block primary><Text>Almacenar</Text></Button>
+                <Button style={styles.buttonStyle} block danger><Text>Cancelar</Text></Button>
             </Form>
         </Content>
       </Container>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  inputStyle: {
+    marginVertical: 5,
+    borderRadius: 10
+  },
+  buttonStyle: {
+    marginVertical: 5,
+    borderRadius: 10,
+  }
+});
