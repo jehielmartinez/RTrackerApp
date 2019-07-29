@@ -7,8 +7,9 @@ import DutyDetail from '../NewList/DutyDetail';
 
 const drawerNavigation = createDrawerNavigator(
     {
-        DutyDetail: {screen: DutyDetail},
+        
         Dashboard: {screen: Dashboard},
+        DutyDetail: {screen: DutyDetail},
         NewList: {screen: NewList}
     },
     {
