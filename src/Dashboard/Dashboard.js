@@ -1,18 +1,43 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Container, Text, Header, Left, Body, Title, Button, Icon, Content, Fab, Accordion, Card, CardItem } from 'native-base';
+import { Container, Text, Header, Left, Body, Title, Button, Icon, Content, Fab, Accordion} from 'native-base';
 
 const duties =[
   {description: 'Electrical Bill', amount: 2543, notes: 'Clave Primaria: 120032', quarter: 'firstQ', status: 'pending'},
-  {description: 'Internet Bill', amount: 885, notes: 'Client Num: 2345521', quarter: 'firstQ', status: 'pending'}
+  {description: 'Internet Bill', amount: 885, notes: 'Client Num: 2345521', quarter: 'firstQ', status: 'paid'}
 ]
 
 export default class Dashboard extends Component {
 
   _renderHeader(item, expanded){
+     let iconName
+     let iconColor
+
+      switch (item.status) {
+        case 'pending':
+          iconName = 'alert'
+          iconColor = '#d9534f'
+        break;
+        case 'paid':
+          iconName = 'checkmark-circle-outline'
+          iconColor = '#5cb85c'
+        break;
+        case 'moved':
+          iconName = 'checkmark-circle-outline'
+          iconColor = '#62B1F6'
+        break;
+        default:
+          iconName = 'help'
+          iconColor = '#000'
+        break;
+      }
+
     return(
       <View style={styles.dutyHeader}>
-        <Text>{item.description}</Text>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Icon style={{fontSize: 35, color: iconColor, marginRight: 20}} name={iconName}/>
+          <Text style={{fontWeight: 'bold', fontSize: 20}}>{item.description}</Text>
+        </View>
         {expanded 
           ? <Icon name='arrow-dropup'/>
           : <Icon name='arrow-dropdown'/>
@@ -49,7 +74,7 @@ export default class Dashboard extends Component {
   render() {
     return (
       <Container>
-        <Header>
+        <Header hasTabs>
           <Left>
             <Button transparent onPress={() => this.props.navigation.openDrawer()}>
               <Icon name='menu'/>
@@ -59,7 +84,7 @@ export default class Dashboard extends Component {
             <Title>RTracker</Title>
           </Body>
         </Header>
-        <Content padder>
+        <Content>
           <Accordion
             dataArray={duties}
             animation={true}
@@ -71,7 +96,7 @@ export default class Dashboard extends Component {
         <Fab 
           direction='up' 
           position='bottomRight' 
-          style={{backgroundColor:'red'}}
+          style={{backgroundColor:'green'}}
           onPress={() => this.props.navigation.navigate('DutyDetail')}>
           <Icon name='add'/>
         </Fab>
@@ -87,7 +112,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 15,
     alignItems: 'center',
-    backgroundColor: '#EEEEEE',
+    backgroundColor: '#f4f4f4',
     borderBottomWidth: 0.3,
   },
   dutyContent: {
