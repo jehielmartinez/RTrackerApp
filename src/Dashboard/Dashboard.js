@@ -3,8 +3,9 @@ import { View, StyleSheet } from 'react-native';
 import { Container, Text, Header, Left, Body, Title, Button, Icon, Content, Fab, Accordion} from 'native-base';
 
 const duties =[
-  {description: 'Electrical Bill', amount: 2543, notes: 'Clave Primaria: 120032', quarter: 'firstQ', status: 'pending'},
-  {description: 'Internet Bill', amount: 885, notes: 'Client Num: 2345521', quarter: 'firstQ', status: 'paid'}
+  {description: 'Electrical Bill', amount: 2543, notes: 'Clave Primaria: 120032', quarter: 'firstQ', status: 'moved', month: '01'},
+  {description: 'Internet Bill', amount: 885, notes: 'Client Num: 2345521', quarter: 'firstQ', status: 'pending', month: '01'},
+  {description: 'Apartment Rent', amount: 4500, notes: 'Cuenta: 12345323 Occidente', quarter: 'firstQ', status: 'paid', month: '01'},
 ]
 
 export default class Dashboard extends Component {
@@ -23,7 +24,7 @@ export default class Dashboard extends Component {
           iconColor = '#5cb85c'
         break;
         case 'moved':
-          iconName = 'checkmark-circle-outline'
+          iconName = 'share-alt'
           iconColor = '#62B1F6'
         break;
         default:
