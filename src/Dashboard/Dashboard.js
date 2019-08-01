@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Container, Text, Header, Left, Body, Title, Button, Icon, Content, Fab, Accordion, Tabs, Tab} from 'native-base';
+import moment from 'moment';
 
 const duties =[
   {description: 'Electrical Bill', amount: 2543, notes: 'Clave Primaria: 120032', quarter: 'firstQ', status: 'moved', month: '01'},
@@ -11,7 +12,8 @@ const duties =[
 export default class Dashboard extends Component {
   state={
     firstHalfDuties:[],
-    secondHalfDuties:[]
+    secondHalfDuties:[],
+    month: '01'
   }
 
   _renderHeader(item, expanded){
@@ -77,6 +79,7 @@ export default class Dashboard extends Component {
   }
 
   render() {
+    const monthName = moment(this.state.month, 'MM').format('MMMM')
     return (
       <Container>
 
@@ -87,7 +90,7 @@ export default class Dashboard extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>RTracker</Title>
+            <Title>{monthName}</Title>
           </Body>
         </Header>
         <Tabs>
