@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Container, Text, Header, Left, Body, Title, Button, Icon, Content, Fab, Accordion} from 'native-base';
+import { Container, Text, Header, Left, Body, Title, Button, Icon, Content, Fab, Accordion, Tabs, Tab} from 'native-base';
 
 const duties =[
   {description: 'Electrical Bill', amount: 2543, notes: 'Clave Primaria: 120032', quarter: 'firstQ', status: 'moved', month: '01'},
@@ -9,6 +9,10 @@ const duties =[
 ]
 
 export default class Dashboard extends Component {
+  state={
+    firstHalfDuties:[],
+    secondHalfDuties:[]
+  }
 
   _renderHeader(item, expanded){
      let iconName
@@ -75,6 +79,7 @@ export default class Dashboard extends Component {
   render() {
     return (
       <Container>
+
         <Header hasTabs>
           <Left>
             <Button transparent onPress={() => this.props.navigation.openDrawer()}>
@@ -85,15 +90,26 @@ export default class Dashboard extends Component {
             <Title>RTracker</Title>
           </Body>
         </Header>
-        <Content>
-          <Accordion
-            dataArray={duties}
-            animation={true}
-            expanded={true}
-            renderContent={this._renderContent}
-            renderHeader={this._renderHeader}
-          />
-        </Content>
+        <Tabs>
+          <Tab heading='First Half'>
+            <Accordion
+              dataArray={duties}
+              animation={true}
+              expanded={true}
+              renderContent={this._renderContent}
+              renderHeader={this._renderHeader}
+            />
+          </Tab>
+          <Tab heading='Second Half'>
+            <Accordion
+              dataArray={duties}
+              animation={true}
+              expanded={true}
+              renderContent={this._renderContent}
+              renderHeader={this._renderHeader}
+            />
+          </Tab>
+        </Tabs>
         <Fab 
           direction='up' 
           position='bottomRight' 
