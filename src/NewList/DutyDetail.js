@@ -1,40 +1,77 @@
 import React, { Component } from 'react';
 import { Text, Container, Header, Content, Form, Item, Label, Input, Textarea, Picker, DatePicker, Button, Body, Title, Left, Icon } from 'native-base';
-import {StyleSheet, Modal, ActivityIndicator} from 'react-native';
+import {StyleSheet, ActivityIndicator} from 'react-native';
 import moment from 'moment'
-import { newDuty } from '../functions/dutyFunctions';
+import { newDuty, editDuty } from '../functions/dutyFunctions';
 import { Overlay } from 'react-native-elements';
 
 export default class DutyDetail extends Component {
-  state={
+  state = {
     description: '',
     amount: '',
     notes: '',
     monthHalf: 'firstH',
-    showActivity: false
+    _id: '',
+    showActivity: false,
+    editing: false
   }
 
-  saveDuty = async() => {
-    const {description, amount, notes, monthHalf} = this.state
-    const currentMonth = moment().format('MM')
+  componentDidMount(){
+    this.props.navigation.addListener('didFocus', this.loadState)
+  }
 
-    const duty = {
+  loadState = () => {
+    const duty = this.props.navigation.getParam('duty', '')
+    const {description, notes, monthHalf, _id} = duty
+    const amount = JSON.stringify(duty.amount)
+
+    console.log(Object.keys(duty).length)
+    
+    if(Object.keys(duty).length === 0){
+      this.setState({editing: false})
+    } else {
+      this.setState({editing: true})
+    }
+    
+    this.setState({
       description,
       amount,
       notes,
       monthHalf,
-      month: currentMonth
-    }
+      _id
+    })
+  }
+
+  saveDuty = async() => {
+    const {description, amount, notes, monthHalf, _id} = this.state
+    const currentMonth = moment().format('MM')
+
+    let duty = {}
+    let response = ''
 
     this.setState({showActivity: true})
-    const response = await newDuty(duty)
+    
+    if(this.state.editing){
+      duty = {
+        description,
+        amount,
+        notes,
+        monthHalf,
+      }
+      response = await editDuty(_id, duty)
+    } else {
+      duty = {
+        description,
+        amount,
+        notes,
+        monthHalf,
+        month: currentMonth
+      }
+      response = await newDuty(duty)
+    }
+
     console.log(response)
-    this.setState({
-      showActivity: false,
-      description: '',
-      amount: '',
-      notes: ''
-    })
+    this.setState({showActivity: false})
 
     this.props.navigation.goBack()
   }
