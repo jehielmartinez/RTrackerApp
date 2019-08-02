@@ -12,8 +12,8 @@ export default class Dashboard extends Component {
     refreshing: false
   }
 
-  componentWillMount(){
-    this.getAllDuties()
+  componentDidMount(){
+    this.props.navigation.addListener('didFocus', this.getAllDuties)
   }
 
   getAllDuties = async() => {
@@ -127,7 +127,7 @@ export default class Dashboard extends Component {
           <Button small info onPress={() => this.transferOneDuty(item._id, item.monthHalf)}>
             <Icon name='redo'/>
           </Button>
-          <Button small warning>
+          <Button small warning onPress={() => this.props.navigation.navigate('DutyDetail', {duty: item})}>
             <Icon name='create'/>
           </Button>
           <Button small danger onPress={() => this.deleteOneDuty(item._id)}>
@@ -198,7 +198,7 @@ export default class Dashboard extends Component {
           direction='up' 
           position='bottomRight' 
           style={{backgroundColor:'green'}}
-          onPress={() => this.props.navigation.navigate('DutyDetail')}>
+          onPress={() => this.props.navigation.navigate('DutyDetail', {duty: {}})}>
           <Icon name='add'/>
         </Fab>
 
