@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { Text, Container, Header, Content, Form, Item, Label, Input, Textarea, Picker, DatePicker, Button, Body, Title, Left, Icon } from 'native-base';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Modal, ActivityIndicator} from 'react-native';
 import moment from 'moment'
 import { newDuty } from '../functions/dutyFunctions';
+import { Overlay } from 'react-native-elements';
 
 export default class DutyDetail extends Component {
   state={
     description: '',
     amount: '',
     notes: '',
-    monthHalf: 'firstH'
+    monthHalf: 'firstH',
+    showActivity: false
   }
 
   saveDuty = async() => {
@@ -24,8 +26,10 @@ export default class DutyDetail extends Component {
       month: currentMonth
     }
 
+    this.setState({showActivity: true})
     const response = await newDuty(duty)
     console.log(response)
+    this.setState({showActivity: false})
 
     this.props.navigation.goBack()
   }
@@ -102,6 +106,16 @@ export default class DutyDetail extends Component {
                 </Button>
             </Form>
         </Content>
+        
+        {/* Activity Indicator */}
+        <Overlay 
+          width='auto'
+          height='auto'
+          isVisible={this.state.showActivity}
+        >
+          <ActivityIndicator size='large'/>
+        </Overlay >
+
       </Container>
     );
   }
