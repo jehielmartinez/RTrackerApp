@@ -29,7 +29,12 @@ export default class DutyDetail extends Component {
     this.setState({showActivity: true})
     const response = await newDuty(duty)
     console.log(response)
-    this.setState({showActivity: false})
+    this.setState({
+      showActivity: false,
+      description: '',
+      amount: '',
+      notes: ''
+    })
 
     this.props.navigation.goBack()
   }
