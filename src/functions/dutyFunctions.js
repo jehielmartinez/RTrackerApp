@@ -16,3 +16,18 @@ export function getDuties(month, monthHalf){
         method: 'GET'
     })
 }
+
+export function deleteDuty(id){
+    return axios({
+        url: `${path}/delete-duty/${id}`,
+        method: 'DELETE'
+    })
+}
+
+export function paidDuty(id){
+    return axios({
+        url: `${path}/edit-duty/${id}`,
+        method: 'PATCH',
+        data: {status: 'paid'}
+    })
+}
