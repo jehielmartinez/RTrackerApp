@@ -9,3 +9,10 @@ export function newDuty(duty){
         data: duty
     })
 }
+
+export function getDuties(month, monthHalf){
+    return axios({
+        url: `${path}/get-duties?month=${month}&half=${monthHalf}`,
+        method: 'GET'
+    })
+}

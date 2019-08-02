@@ -1,19 +1,37 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, RefreshControl } from 'react-native';
 import { Container, Text, Header, Left, Body, Title, Button, Icon, Content, Fab, Accordion, Tabs, Tab} from 'native-base';
 import moment from 'moment';
-
-const duties =[
-  {description: 'Electrical Bill', amount: 2543, notes: 'Clave Primaria: 120032', quarter: 'firstQ', status: 'moved', month: '01'},
-  {description: 'Internet Bill', amount: 885, notes: 'Client Num: 2345521', quarter: 'firstQ', status: 'pending', month: '01'},
-  {description: 'Apartment Rent', amount: 4500, notes: 'Cuenta: 12345323 Occidente', quarter: 'firstQ', status: 'paid', month: '01'},
-]
+import { getDuties } from '../functions/dutyFunctions';
 
 export default class Dashboard extends Component {
   state={
     firstHalfDuties:[],
     secondHalfDuties:[],
-    month: '01'
+    month: moment().format('MM'),
+    refreshing: false
+  }
+
+  getAllDuties = async() => {
+    const {month} = this.state
+    this.setState({refreshing: true})
+    try {
+
+      const responseFirstHalf = await getDuties(month, 'firstH')
+      this.setState({firstHalfDuties: responseFirstHalf.data})
+      console.log('FIRST HALF DUTIES', responseFirstHalf)
+
+      const responseSecondHalf = await getDuties(month, 'secondH')
+      this.setState({secondHalfDuties: responseSecondHalf.data})
+      console.log('SECOND HALF DUTIES', responseSecondHalf)
+
+      this.setState({refreshing: false})
+      
+    } catch (error) {
+      console.log('ERROR', error)
+      this.setState({refreshing: false})
+    }
+
   }
 
   _renderHeader(item, expanded){
@@ -95,22 +113,40 @@ export default class Dashboard extends Component {
         </Header>
         <Tabs>
           <Tab heading='First Half'>
-            <Accordion
-              dataArray={duties}
-              animation={true}
-              expanded={true}
-              renderContent={this._renderContent}
-              renderHeader={this._renderHeader}
-            />
+          <Content
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing} 
+                  onRefresh={this.getAllDuties}
+                />
+              }
+            >
+              <Accordion
+                dataArray={this.state.firstHalfDuties}
+                animation={true}
+                expanded={true}
+                renderContent={this._renderContent}
+                renderHeader={this._renderHeader}
+              />
+            </Content>
           </Tab>
           <Tab heading='Second Half'>
-            <Accordion
-              dataArray={duties}
-              animation={true}
-              expanded={true}
-              renderContent={this._renderContent}
-              renderHeader={this._renderHeader}
-            />
+            <Content
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing} 
+                  onRefresh={this.getAllDuties}
+                />
+              }
+            >
+              <Accordion
+                dataArray={this.state.secondHalfDuties}
+                animation={true}
+                expanded={true}
+                renderContent={this._renderContent}
+                renderHeader={this._renderHeader}
+              />
+            </Content>
           </Tab>
         </Tabs>
         <Fab 

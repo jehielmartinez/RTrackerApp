@@ -83,7 +83,7 @@ export default class DutyDetail extends Component {
                         selectedValue={this.state.monthHalf}
                     >
                         <Picker.Item label='First Half' value='firstH'/>
-                        <Picker.Item label='Second Half' value='lastH'/>
+                        <Picker.Item label='Second Half' value='secondH'/>
                     </Picker>
                 </Item>
 
