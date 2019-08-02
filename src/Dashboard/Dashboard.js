@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, RefreshControl } from 'react-native';
 import { Container, Text, Header, Left, Body, Title, Button, Icon, Content, Fab, Accordion, Tabs, Tab} from 'native-base';
 import moment from 'moment';
-import { getDuties, deleteDuty, payDuty } from '../functions/dutyFunctions';
+import { getDuties, deleteDuty, payDuty, transferDuty } from '../functions/dutyFunctions';
 
 export default class Dashboard extends Component {
   state={
@@ -58,6 +58,24 @@ export default class Dashboard extends Component {
     }
   }
 
+  transferOneDuty = async(id, currentHalf) => {
+    let half = ''
+    
+    if(currentHalf === 'firstH'){
+      half = 'secondH'
+    } else if(currentHalf === 'secondH'){
+      half = 'firstH'
+    }
+
+    try {
+      const response = await transferDuty(id, half)
+      console.log('TRANSFERED', response)
+      this.getAllDuties()
+    } catch (error) {
+      console.log('ERROR', error)
+    }
+  }
+
   _renderHeader(item, expanded){
      let iconName
      let iconColor
@@ -106,7 +124,7 @@ export default class Dashboard extends Component {
           <Button small success onPress={() => this.payOneDuty(item._id)}>
             <Icon name='checkmark-circle'/>
           </Button>
-          <Button small info>
+          <Button small info onPress={() => this.transferOneDuty(item._id, item.monthHalf)}>
             <Icon name='redo'/>
           </Button>
           <Button small warning>

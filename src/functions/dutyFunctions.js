@@ -31,3 +31,11 @@ export function payDuty(id){
         data: {status: 'paid'}
     })
 }
+
+export function transferDuty(id, half){
+    return axios({
+        url: `${path}/edit-duty/${id}`,
+        method: 'PATCH',
+        data: {monthHalf: half}
+    })
+}
