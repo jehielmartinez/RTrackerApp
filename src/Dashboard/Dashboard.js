@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, RefreshControl } from 'react-native';
 import { Container, Text, Header, Left, Body, Title, Button, Icon, Content, Fab, Accordion, Tabs, Tab} from 'native-base';
 import moment from 'moment';
-import { getDuties } from '../functions/dutyFunctions';
+import { getDuties, deleteDuty } from '../functions/dutyFunctions';
 
 export default class Dashboard extends Component {
   state={
@@ -32,6 +32,16 @@ export default class Dashboard extends Component {
       this.setState({refreshing: false})
     }
 
+  }
+
+  deleteOneDuty = async(id) => {
+    try {
+      response = await deleteDuty(id)
+      console.log('DELETED', response)
+      this.getAllDuties()
+    } catch (error) {
+      console.log('ERROR', error)
+    }
   }
 
   _renderHeader(item, expanded){
@@ -71,7 +81,7 @@ export default class Dashboard extends Component {
     );
   }
 
-  _renderContent(item) {  
+  _renderContent(item) {
     return (
       <View >
         <View style={styles.dutyContent}>
@@ -88,7 +98,7 @@ export default class Dashboard extends Component {
           <Button small warning>
             <Icon name='create'/>
           </Button>
-          <Button small danger>
+          <Button small danger onPress={() => this.deleteOneDuty(item._id)}>
             <Icon name='trash'/>
           </Button>
         </View>
@@ -111,6 +121,7 @@ export default class Dashboard extends Component {
             <Title>{monthName}</Title>
           </Body>
         </Header>
+
         <Tabs>
           <Tab heading='First Half'>
           <Content
@@ -125,11 +136,12 @@ export default class Dashboard extends Component {
                 dataArray={this.state.firstHalfDuties}
                 animation={true}
                 expanded={true}
-                renderContent={this._renderContent}
+                renderContent={this._renderContent.bind(this)}
                 renderHeader={this._renderHeader}
               />
             </Content>
           </Tab>
+
           <Tab heading='Second Half'>
             <Content
               refreshControl={
@@ -143,12 +155,13 @@ export default class Dashboard extends Component {
                 dataArray={this.state.secondHalfDuties}
                 animation={true}
                 expanded={true}
-                renderContent={this._renderContent}
+                renderContent={this._renderContent.bind(this)}
                 renderHeader={this._renderHeader}
               />
             </Content>
           </Tab>
         </Tabs>
+
         <Fab 
           direction='up' 
           position='bottomRight' 
@@ -156,6 +169,7 @@ export default class Dashboard extends Component {
           onPress={() => this.props.navigation.navigate('DutyDetail')}>
           <Icon name='add'/>
         </Fab>
+        
       </Container>
     );
   }
