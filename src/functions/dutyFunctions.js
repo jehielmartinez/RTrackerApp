@@ -39,3 +39,11 @@ export function transferDuty(id, half){
         data: {monthHalf: half}
     })
 }
+
+export function editDuty(id, duty){
+    return axios({
+        url: `${path}/edit-duty/${id}`,
+        method: 'PATCH',
+        data: duty
+    })
+}
