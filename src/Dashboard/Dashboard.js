@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, RefreshControl } from 'react-native';
 import { Container, Text, Header, Left, Body, Title, Button, Icon, Content, Fab, Accordion, Tabs, Tab} from 'native-base';
 import moment from 'moment';
-import { getDuties, deleteDuty } from '../functions/dutyFunctions';
+import { getDuties, deleteDuty, payDuty } from '../functions/dutyFunctions';
 
 export default class Dashboard extends Component {
   state={
@@ -10,6 +10,10 @@ export default class Dashboard extends Component {
     secondHalfDuties:[],
     month: moment().format('MM'),
     refreshing: false
+  }
+
+  componentWillMount(){
+    this.getAllDuties()
   }
 
   getAllDuties = async() => {
@@ -38,6 +42,16 @@ export default class Dashboard extends Component {
     try {
       response = await deleteDuty(id)
       console.log('DELETED', response)
+      this.getAllDuties()
+    } catch (error) {
+      console.log('ERROR', error)
+    }
+  }
+
+  payOneDuty = async(id) => {
+    try {
+      response = await payDuty(id)
+      console.log('PAID', response)
       this.getAllDuties()
     } catch (error) {
       console.log('ERROR', error)
@@ -89,7 +103,7 @@ export default class Dashboard extends Component {
           <Text style={styles.dutyContentNotes}>{item.notes}</Text>
         </View>
         <View style={styles.dutyContentActions}>
-          <Button small success>
+          <Button small success onPress={() => this.payOneDuty(item._id)}>
             <Icon name='checkmark-circle'/>
           </Button>
           <Button small info>
@@ -169,7 +183,7 @@ export default class Dashboard extends Component {
           onPress={() => this.props.navigation.navigate('DutyDetail')}>
           <Icon name='add'/>
         </Fab>
-        
+
       </Container>
     );
   }

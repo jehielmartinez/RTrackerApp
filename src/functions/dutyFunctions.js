@@ -24,7 +24,7 @@ export function deleteDuty(id){
     })
 }
 
-export function paidDuty(id){
+export function payDuty(id){
     return axios({
         url: `${path}/edit-duty/${id}`,
         method: 'PATCH',
