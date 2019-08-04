@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, RefreshControl } from 'react-native';
-import { Container, Text, Header, Left, Body, Title, Button, Icon, Content, Fab, Accordion, Tabs, Tab} from 'native-base';
+import { Container, Text, Header, Left, Body, Title, Button, Icon, Content, Fab, Accordion, Tabs, Tab, Right, Picker, Form, List, ListItem} from 'native-base';
 import moment from 'moment';
 import { getDuties, deleteDuty, payDuty, transferDuty } from '../functions/dutyFunctions';
+import { Overlay } from 'react-native-elements';
 
 export default class Dashboard extends Component {
   state={
     firstHalfDuties:[],
     secondHalfDuties:[],
     month: moment().format('MM'),
-    refreshing: false
+    refreshing: false,
+    monthModalVisible: false
   }
 
   componentDidMount(){
@@ -17,8 +19,8 @@ export default class Dashboard extends Component {
   }
 
   getAllDuties = async() => {
-    const {month} = this.state
-    this.setState({refreshing: true})
+    const month = this.state.month
+    this.setState({refreshing: true, monthModalVisible: false})
     try {
 
       const responseFirstHalf = await getDuties(month, 'firstH')
@@ -138,7 +140,16 @@ export default class Dashboard extends Component {
     );
   }
 
+  _renderPickerRow = (item) => {
+    return (
+      <ListItem key={item} button onPress={() => this.setState({month: item})}>
+        <Text>{moment(item, 'MM').format('MMMM')}</Text>
+      </ListItem>
+    )
+  }
+
   render() {
+    const months=['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
     const monthName = moment(this.state.month, 'MM').format('MMMM')
     return (
       <Container>
@@ -152,6 +163,23 @@ export default class Dashboard extends Component {
           <Body>
             <Title>{monthName}</Title>
           </Body>
+          <Right>
+            <Button transparent onPress={() => this.setState({monthModalVisible: true})}>
+              <Icon name='search'/>
+            </Button>
+              <Overlay
+                isVisible={this.state.monthModalVisible}
+                onBackdropPress={() => this.getAllDuties()}
+              >
+                <View>
+                <List 
+                  scrollEnabled 
+                  dataArray={months}
+                  renderRow={this._renderPickerRow}>
+                </List>
+                </View>
+              </Overlay>
+          </Right>
         </Header>
 
         <Tabs>
