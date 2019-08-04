@@ -225,7 +225,7 @@ export default class Dashboard extends Component {
           direction='up' 
           position='bottomRight' 
           style={{backgroundColor:'green'}}
-          onPress={() => this.props.navigation.navigate('DutyDetail', {duty: {}})}>
+          onPress={() => this.props.navigation.navigate('DutyDetail', {duty: {}, month: this.state.month})}>
           <Icon name='add'/>
         </Fab>
 
