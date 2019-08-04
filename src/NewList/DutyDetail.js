@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, Container, Header, Content, Form, Item, Label, Input, Textarea, Picker, DatePicker, Button, Body, Title, Left, Icon } from 'native-base';
+import { Text, Container, Header, Content, Form, Item, Input, Textarea, Picker, Button, Body, Title, Left, Icon } from 'native-base';
 import {StyleSheet, ActivityIndicator} from 'react-native';
 import moment from 'moment'
 import { newDuty, editDuty } from '../functions/dutyFunctions';

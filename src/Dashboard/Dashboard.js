@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, RefreshControl } from 'react-native';
-import { Container, Text, Header, Left, Body, Title, Button, Icon, Content, Fab, Accordion, Tabs, Tab, Right, Picker, Form, List, ListItem} from 'native-base';
+import { Container, Text, Header, Left, Body, Title, Button, Icon, Content, Fab, Accordion, Tabs, Tab, Right, List, ListItem} from 'native-base';
 import moment from 'moment';
 import { getDuties, deleteDuty, payDuty, transferDuty } from '../functions/dutyFunctions';
 import { Overlay } from 'react-native-elements';
@@ -37,7 +37,6 @@ export default class Dashboard extends Component {
       console.log('ERROR', error)
       this.setState({refreshing: false})
     }
-
   }
 
   deleteOneDuty = async(id) => {

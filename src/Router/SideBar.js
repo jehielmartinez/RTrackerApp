@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Container, List, ListItem } from 'native-base';
-import moment from 'moment'
+import { Container} from 'native-base';
 
 export default class SideBar extends Component {
   
