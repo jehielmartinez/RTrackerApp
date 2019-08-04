@@ -47,3 +47,10 @@ export function editDuty(id, duty){
         data: duty
     })
 }
+
+export function cloneDuties(month){
+    return axios({
+        url: `${path}/clone-duties?prevMonth=${month}`,
+        method: 'GET',
+    })
+}
